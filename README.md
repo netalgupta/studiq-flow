@@ -61,7 +61,7 @@ Enhancements
 
 How to run:
 1.	Clone repository: 
-git clone https://github.com/abhirajkochale/studiq-flow
+git clone https://github.com/netalgupta/studiq-flow
 
 2.	Install dependencies in terminal:
 
