@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, GraduationCap, QrCode, LayoutDashboard, LogOut } from 'lucide-react';
+import { Calendar, Users, GraduationCap, QrCode, LayoutDashboard, LogOut, Shield, BarChart3, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavbarProps {
-  userType: 'student' | 'faculty';
+  userType: 'student' | 'faculty' | 'admin' | 'teacher';
   userName: string;
 }
 
@@ -23,7 +23,19 @@ export const Navbar = ({ userType, userName }: NavbarProps) => {
     { path: '/faculty/schedule', label: 'Schedule', icon: Calendar },
   ];
 
-  const links = userType === 'student' ? studentLinks : facultyLinks;
+  const teacherLinks = [
+    { path: '/teacher', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/timetable', label: 'Timetable', icon: Calendar },
+  ];
+
+  const adminLinks = [
+    { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/admin/users', label: 'Users', icon: Users },
+    { path: '/timetable', label: 'Timetable', icon: Calendar },
+    { path: '/admin/reports', label: 'Reports', icon: BarChart3 },
+  ];
+
+  const links = userType === 'student' ? studentLinks : userType === 'admin' ? adminLinks : userType === 'teacher' ? teacherLinks : facultyLinks;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/30">
