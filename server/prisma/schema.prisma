@@ -1,0 +1,49 @@
+// server/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String      @id @default(cuid())
+  name       String?
+  email      String      @unique
+  role       String      @default("STUDENT") // values: "STUDENT", "FACULTY", "ADMIN"
+  googleSub  String?     @unique
+  embeddings Embedding[]
+  createdAt  DateTime    @default(now())
+}
+
+model Embedding {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  vector    String   // store embedding as JSON string
+  createdAt DateTime @default(now())
+}
+
+model ClassSession {
+  id         String       @id @default(cuid())
+  title      String?
+  teacherId  String?
+  code       String?
+  expiresAt  DateTime?
+  active     Boolean      @default(false)
+  marks      Attendance[]
+  createdAt  DateTime     @default(now())
+}
+
+model Attendance {
+  id         String       @id @default(cuid())
+  session    ClassSession @relation(fields: [sessionId], references: [id])
+  sessionId  String
+  userId     String?
+  userName   String?
+  method     String       // "face" | "code" | "manual"
+  confidence Float?
+  timestamp  DateTime     @default(now())
+}
